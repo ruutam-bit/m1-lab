@@ -82,10 +82,3 @@ def test_personal_code_is_not_logged(
     assert response.status_code == status
     assert personal_code not in caplog.text
     assert personal_code.replace("-", "") not in caplog.text
-
-
-def test_ui_checks_personal_code_before_sending(client):
-    # Papildu UI pārbaude: pati pārbaude notiek pārlūkā; šeit tikai, ka forma
-    # satur to pašu noteikumu. Galīgo lēmumu pieņem serveris.
-    response = client.get("/ui/")
-    assert "/^[0-9]{6}-?[0-9]{5}$/" in response.text

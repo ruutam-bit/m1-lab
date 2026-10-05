@@ -183,16 +183,6 @@
       return unknown;
     }
 
-    // CR-1: tas pats noteikums kā API (app/models.py). Nederīgu kodu nesūtām.
-    const PERSONAL_CODE_RE = /^[0-9]{6}-?[0-9]{5}$/;
-
-    function personalCodeIssue(value) {
-      const code = (value || "").trim();
-      if (!code) return "REQUIRED";
-      if (!PERSONAL_CODE_RE.test(code)) return "INVALID_FORMAT";
-      return null;
-    }
-
     function showResult(data) {
       const reason = data.reasonCode ? escapeHtml(data.reasonCode) : "—";
       message.className = "message ok";
@@ -224,11 +214,6 @@
       event.preventDefault();
       clearErrors();
       const payload = Object.fromEntries(new FormData(form).entries());
-      const codeIssue = personalCodeIssue(payload.personalCode);
-      if (codeIssue) {
-        showFieldErrors([{ field: "personalCode", issue: codeIssue }]);
-        return;
-      }
       // Tukšus laukus nesūtām: API pats pasaka, kas trūkst.
       for (const key of Object.keys(payload)) {
         if (payload[key] === "") delete payload[key];
